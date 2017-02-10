@@ -13,14 +13,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegisterActivity extends AppCompatActivity {
+import me.dm7.barcodescanner.zbar.Result;
+import me.dm7.barcodescanner.zbar.ZBarScannerView;
+
+public class RegisterActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -30,6 +37,43 @@ public class RegisterActivity extends AppCompatActivity {
 
     private final int REQUEST_CODE_SOME_FEATURES_PERMISSIONS = 0;
     List<String> permissions;
+
+    private RelativeLayout mFormView;
+    private ZBarScannerView scannerView;
+    private Switch toggleButton;
+    private ToggleButton toggleBtn;
+
+    private static boolean checkExpressionView = false;
+
+    // Call back to connect to device and enable bluetooth
+    private CompoundButton.OnCheckedChangeListener toggleListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            if (b){
+                // The toggle is enabled
+                scannerView.setVisibility(View.VISIBLE);
+                mFormView.setVisibility(View.INVISIBLE);
+                scannerView.startCamera();
+            }else {
+                // The toggle is disabled
+                scannerView.setVisibility(View.INVISIBLE);
+                mFormView.setVisibility(View.VISIBLE);
+                scannerView.stopCamera();
+            }
+        }
+    };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        scannerView.stopCamera();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        scannerView.startCamera();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +86,25 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
 
+        mFormView = (RelativeLayout) findViewById(R.id.ip_form_view);
+        scannerView = (ZBarScannerView) findViewById(R.id.scanner_view);
+        scannerView.setAutoFocus(true);
+        scannerView.setResultHandler(this);
+
+        toggleButton = (Switch) findViewById(R.id.toggle_btn);
+        toggleButton.setOnCheckedChangeListener(toggleListener);
+
+        toggleBtn = (ToggleButton) findViewById(R.id.selector);
+        toggleBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    checkExpressionView = true;
+                }else {
+                    checkExpressionView = false;
+                }
+            }
+        });
 
         start = (Button) findViewById(R.id.start_service);
         start.setOnClickListener(new View.OnClickListener() {
@@ -74,8 +137,15 @@ public class RegisterActivity extends AppCompatActivity {
             editor.putString(getString(R.string.port), port);
             editor.commit();
 
-            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-            startActivity(intent);
+            scannerView.stopCamera();
+
+            if (checkExpressionView){
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                startActivity(intent);
+            }else {
+                Intent intent = new Intent(RegisterActivity.this, WebRtcActivity.class);
+                startActivity(intent);
+            }
         }else {
             Toast.makeText(getApplicationContext(), "Please provide IP and port numbers", Toast.LENGTH_SHORT).show();
         }
@@ -114,5 +184,27 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public void handleResult(Result result) {
+
+        // Do something with the result here
+        Log.v(TAG, result.getContents()); // Prints scan results
+        Log.v(TAG, result.getBarcodeFormat().getName()); // Prints the scan format (qrcode, pdf417 etc.)
+
+        String ip = result.getContents();
+        String port = "1883";
+
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.ip_address), ip);
+        editor.putString(getString(R.string.port), port);
+        editor.commit();
+
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        startActivity(intent);
+
+
     }
 }
