@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.hardware.camera2.params.Face;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -140,7 +141,7 @@ public class RegisterActivity extends AppCompatActivity implements ZBarScannerVi
             scannerView.stopCamera();
 
             if (checkExpressionView){
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, FaceDetectionActivity.class);
                 startActivity(intent);
             }else {
                 Intent intent = new Intent(RegisterActivity.this, WebRtcActivity.class);

@@ -44,4 +44,6 @@ dependencies {
 
     // Android Fillable Loader
     compile 'com.github.jorgecastilloprz:fillableloaders:1.03@aar'
+
+    compile 'com.microsoft.projectoxford:face:1.1.0'
 }

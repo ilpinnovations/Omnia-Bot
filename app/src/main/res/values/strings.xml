@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Omnia Bot</string>
 
+    <string name="subscription_key">df2a107b59d2487bb4296bb080e55bfb</string>
+
     <string name="shared_prefs">Network</string>
     <string name="ip_address">IP Address</string>
     <string name="port">Port</string>

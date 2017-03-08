@@ -29,16 +29,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RegisterActivity"
-            android:screenOrientation="landscape">
-        </activity>
+            android:screenOrientation="landscape"></activity>
 
-        <service android:name="org.eclipse.paho.android.service.MqttService"></service>
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
 
         <receiver android:name=".ExpressionAlarmReceiver" />
 
-        <activity android:name=".WebRtcActivity"
-            android:screenOrientation="landscape"></activity>
-
+        <activity
+            android:name=".WebRtcActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".SplashScreen"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -50,6 +49,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".FaceDetectionActivity"></activity>
     </application>
 
 </manifest>
