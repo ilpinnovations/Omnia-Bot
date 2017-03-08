@@ -13,71 +13,37 @@
         android:text="Welcome to Innovations Lab"
         android:gravity="center"/>
 
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:layout_below="@+id/title"
-        android:layout_marginTop="20dp">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
-        <ImageView
-            android:id="@+id/image_view"
+        <SurfaceView
+            android:id="@+id/surfaceView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@android:color/darker_gray"
-            android:layout_margin="20dp"/>
+            android:layout_weight="4"
+            android:clickable="true"
+            android:layout_margin="10dp"/>
 
-        <RelativeLayout
+        <!--<Button-->
+            <!--android:id="@+id/take_photo_btn"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="Take Photo"/>-->
+
+        <TextView
+            android:id="@+id/face_data"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:id="@+id/btn_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_alignParentTop="true"
-                android:visibility="visible">
-
-                <Button
-                    android:id="@+id/take_photo_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Take Photo"
-                    android:layout_margin="10dp"/>
-                <Button
-                    android:id="@+id/detect_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Detect"
-                    android:layout_margin="10dp"/>
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
-
-                <ImageView
-                    android:id="@+id/thumbnail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_above="@+id/face_data"
-                    android:src="@mipmap/ic_launcher"
-                    />
-
-                <TextView
-                    android:layout_margin="10dp"
-                    android:id="@+id/face_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </RelativeLayout>
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"/>
     </LinearLayout>
 
 </RelativeLayout>
